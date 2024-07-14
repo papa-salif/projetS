@@ -46,14 +46,13 @@ class HistoriqueController extends Controller
             return redirect()->route('login')->with('error', 'Vous devez être connecté pour voir l\'historique.');
         }
 
-        $incidentsQuery = Incident::where('status', 'resolved')
-            ->where(function ($query) use ($agent) {
-                $query->where('agent_id', $agent->id)
-                      ->orWhere('type', $agent->agent_type);
-            })->latest();
+        // Gestion des filtres
+        $incidentsQuery = Incident::where('status', 'resolved');
 
-        if ($request->has('type')) {
-            $incidentsQuery->where('type', $request->type);
+        if ($request->filter == 'agent') {
+            $incidentsQuery->where('agent_id', $agent->id);
+        } else if ($request->filter == 'type') {
+            $incidentsQuery->where('type', $agent->agent_type);
         }
 
         $incidents = $incidentsQuery->paginate(10);
@@ -73,18 +72,23 @@ class HistoriqueController extends Controller
 
         $incidentsQuery = Incident::latest();
 
-        if ($request->has('type')) {
+        if ($request->has('type') && $request->type != '') {
             $incidentsQuery->where('type', $request->type);
         }
 
-        if ($request->has('status')) {
+        if ($request->has('status') && $request->status != '') {
             $incidentsQuery->where('status', $request->status);
+        }
+
+        if ($request->has('agent') && $request->agent != '') {
+            $incidentsQuery->where('agent_id', $request->agent);
         }
 
         $incidents = $incidentsQuery->paginate(10);
         $types = Incident::distinct('type')->pluck('type');
         $statuses = Incident::distinct('status')->pluck('status');
+        $agents = User::where('role', 'agent')->get();
 
-        return view('historiques.admin', compact('incidents', 'types', 'statuses'));
+        return view('historiques.admin', compact('incidents', 'types', 'statuses', 'agents'));
     }
 }
