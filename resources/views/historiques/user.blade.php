@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h1 class="mt-4 mb-4">Mon historique d'incidents</h1>
+    <div class="container mt-4">
+        <h1 class="mb-4">Mon historique d'incidents</h1>
 
         <form method="GET" action="{{ route('historique.user') }}" class="row g-3 mb-4 align-items-end">
             <div class="col-md-6 col-lg-4">
@@ -37,11 +37,8 @@
                     <tbody>
                         @foreach($incidents as $index => $incident)
                             <tr>
-                                <!-- Numérotation continue en tenant compte de la pagination -->
                                 <th scope="row">{{ $loop->iteration + ($incidents->currentPage() - 1) * $incidents->perPage() }}</th>
-                                <td>
-                                    <span >{{ strtoupper($incident->type) }}</span>
-                                </td>
+                                <td>{{ strtoupper($incident->type) }}</td>
                                 <td>{{ $incident->description }}</td>
                                 <td>{{ $incident->created_at->format('d-m-Y H:i') }}</td>
                             </tr>
@@ -49,41 +46,7 @@
                     </tbody>
                 </table>
             </div>
-           <div class="w-10%">{{ $incidents->links() }}</div> 
+            {{ $incidents->links() }}
         @endif
     </div>
-@endsection
-
-@section('styles')
-    <style>
-        .type-badge {
-            color: #fff;
-        }
-
-        .type-badge.panne-electrique {
-            background-color: #f39c12; /* Jaune/orange */
-        }
-
-        .type-badge.fuite-deau {
-            background-color: #3498db; /* Bleu */
-        }
-
-        .type-badge.demande-de-pompiers {
-            background-color: #e74c3c; /* Rouge */
-        }
-
-        /* Ajoutez d'autres types ici */
-    </style>
-@endsection
-
-@section('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const badges = document.querySelectorAll('.type-badge');
-            badges.forEach(badge => {
-                const type = badge.innerText.trim().toLowerCase().replace(/\s+/g, '-');
-                badge.classList.add(type);
-            });
-        });
-    </script>
 @endsection
