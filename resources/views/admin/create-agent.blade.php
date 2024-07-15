@@ -99,7 +99,7 @@
                 </select>
             </div>
 
-            <button type="submit">Créer l'Agent</button>
+            <button class="btn btn-primary" type="submit">Créer l'Agent</button>
         </form>
     </div>
 @endsection

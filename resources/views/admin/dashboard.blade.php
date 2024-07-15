@@ -21,7 +21,7 @@
         <h1>Tableau de Bord de l'Admin</h1>
 
         <div>
-            <a href="{{ route('admin.create-agent') }}">Créer un nouvel agent</a>
+            <a class="btn btn-primary" href="{{ route('admin.create-agent') }}">Créer un nouvel agent</a>
         </div>
 
         <!-- Ajoutez d'autres fonctionnalités administratives ici -->

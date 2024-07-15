@@ -1,135 +1,92 @@
-{{-- <!DOCTYPE html>
-<html>
-<head>
-    <title>Signaler un Incident</title>
-    <script>
-        function requestLocationPermission() {
-            if (navigator.permissions) {
-                navigator.permissions.query({ name: 'geolocation' }).then(function (permissionStatus) {
-                    if (permissionStatus.state === 'granted') {
-                        getLocation();
-                    } else if (permissionStatus.state === 'prompt') {
-                        permissionStatus.onchange = function () {
-                            if (permissionStatus.state === 'granted') {
-                                getLocation();
-                            }
-                        };
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            getLocation();
-                        }, function (error) {
-                            console.error("Error Code = " + error.code + " - " + error.message);
-                        });
-                    } else {
-                        console.error("Geolocation permission denied.");
-                    }
-                });
-            } else if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function (position) {
-                    getLocation();
-                }, function (error) {
-                    console.error("Error Code = " + error.code + " - " + error.message);
-                });
-            } else {
-                console.error("Geolocation is not supported by this browser.");
-            }
-        }
-
-        function getLocation() {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var lat = position.coords.latitude;
-                var lng = position.coords.longitude;
-
-                document.getElementById('latitude').value = lat;
-                document.getElementById('longitude').value = lng;
-                document.getElementById('localisation').value = `Latitude: ${lat}, Longitude: ${lng}`;
-
-                var incidentLocation = { lat: lat, lng: lng };
-                var map = new google.maps.Map(document.getElementById('map'), {
-                    zoom: 15,
-                    center: incidentLocation
-                });
-                var marker = new google.maps.Marker({
-                    position: incidentLocation,
-                    map: map
-                });
-            }, function (error) {
-                console.error("Error Code = " + error.code + " - " + error.message);
-            });
-        }
-    </script>
-</head>
-<body>
-    <h1>Signaler un Incident</h1>
-
-    @if(session('success'))
-        <div>{{ session('success') }}</div>
-    @endif
-
-    @if($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form id="incident-form" action="{{ route('incidents.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div>
-            <label for="type">Type d'incident :</label>
-            <select name="type" id="type" required>
-                <option value="fuite d'eau">Fuite d'eau</option>
-                <option value="panne électrique">Panne électrique</option>
-                <option value="demande de pompiers">Demande de pompiers</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="description">Description :</label>
-            <textarea name="description" id="description" required></textarea>
-        </div>
-
-        <div>
-            <label for="localisation">Localisation :</label>
-            <input type="text" name="localisation" id="localisation" required >
-            <button type="button" id="localisation-btn" onclick="requestLocationPermission()">Obtenir la localisation</button>
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
-        </div>
-
-        <div>
-            <label for="preuves">Preuves (images) :</label>
-            <input type="file" name="preuves[]" id="preuves" multiple>
-        </div>
-
-        <button type="button" onclick="submitForm('simple')">Signaler</button>
-        <button type="button" onclick="submitForm('authenticated')">Signaler et Suivi</button>
-    </form>
-
-    <div id="map" style="height: 400px; width: 100%;"></div>
-
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
-    <script>
-        function submitForm(action) {
-            var form = document.getElementById('incident-form');
-            if (action === 'authenticated' && !@json(Auth::check())) {
-                window.location.href = "{{ route('login') }}";
-            } else {
-                form.action = "{{ route('incidents.store') }}?action=" + action;
-                form.submit();
-            }
-        }
-    </script>
-</body>
-</html> --}}
-
 @extends('layouts.app')
 
 @section('content')
-<!--geolocation -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="h3 mb-0">Signaler un Incident</h1>
+                </div>
+                <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
 
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form id="incident-form" action="{{ route('incidents.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="type" class="form-label">Type d'incident :</label>
+                                <select name="type" id="type" class="form-select" required>
+                                    <option value="fuite d'eau">Fuite d'eau</option>
+                                    <option value="panne électrique">Panne électrique</option>
+                                    <option value="demande de pompiers">Demande de pompiers</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="numero" class="form-label">Numéro :</label>
+                                <input type="text" name="numero" id="numero" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="ville" class="form-label">Ville :</label>
+                                <input type="text" name="ville" id="ville" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="secteur" class="form-label">Secteur :</label>
+                                <input type="text" name="secteur" id="secteur" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description :</label>
+                            <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="localisation" class="form-label">Localisation :</label>
+                            <div class="input-group">
+                                <input type="text" name="localisation" id="localisation" class="form-control" required>
+                                <button type="button" class="btn btn-outline-secondary" id="localisation-btn" onclick="requestLocationPermission()">Obtenir la localisation</button>
+                            </div>
+                            <input type="hidden" name="latitude" id="latitude">
+                            <input type="hidden" name="longitude" id="longitude">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="preuves" class="form-label">Preuves (images) :</label>
+                            <input type="file" name="preuves[]" id="preuves" class="form-control" multiple>
+                        </div>
+
+                        <div class="mb-3">
+                            @if(Auth::check())
+                                <button type="button" class="btn btn-primary" onclick="submitForm('simple')">Signaler</button>
+                            @else
+                                <button type="button" class="btn btn-primary" onclick="submitForm('simple')">Signaler</button>
+                                <button type="button" class="btn btn-secondary" onclick="submitForm('authenticated')">Signaler et Suivi</button>
+                            @endif
+                        </div>
+                    </form>
+
+                    <div id="map" class="mb-4" style="height: 400px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
     var map;
 
@@ -187,76 +144,30 @@
             console.error("Unable to get location.");
         }
     }
-</script>
 
-    <h1>Signaler un Incident</h1>
-
-    @if(session('success'))
-        <div>{{ session('success') }}</div>
-    @endif
-
-    @if($errors->any())
-        <div>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <form id="incident-form" action="{{ route('incidents.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <div>
-            <label for="type">Type d'incident :</label>
-            <select name="type" id="type" required>
-                <option value="fuite d'eau">Fuite d'eau</option>
-                <option value="panne électrique">Panne électrique</option>
-                <option value="demande de pompiers">Demande de pompiers</option>
-            </select>
-        </div>
-
-        <div>
-            <label for="description">Description :</label>
-            <textarea name="description" id="description" required></textarea>
-        </div>
-
-        <div>
-            <label for="localisation">Localisation :</label>
-            <input type="text" name="localisation" id="localisation" required >
-            <button type="button" id="localisation-btn" onclick="requestLocationPermission()">Obtenir la localisation</button>
-            <input type="hidden" name="latitude" id="latitude">
-            <input type="hidden" name="longitude" id="longitude">
-        </div>
-
-        <div>
-            <label for="preuves">Preuves (images) :</label>
-            <input type="file" name="preuves[]" id="preuves" multiple>
-        </div>
-
-        @if(Auth::check())
-            <button type="button" onclick="submitForm('simple')">Signaler</button>
-        @else
-            <button type="button" onclick="submitForm('simple')">Signaler</button>
-            <button type="button" onclick="submitForm('authenticated')">Signaler et Suivi</button>
-        @endif
-
-        {{-- <button type="button" onclick="submitForm('simple')">Signaler</button>
-        <button type="button" onclick="submitForm('authenticated')">Signaler et Suivi</button> --}}
-    </form>
-
-    <div id="map" style="height: 300px; width: 50%;"></div>
-
-    {{-- <script >  mapImage.src = "https://maps.google.com/?q=" + latitude + "," + longitude; </script> --}}
-    <script>
-        function submitForm(action) {
-            var form = document.getElementById('incident-form');
-            if (action === 'authenticated' && !@json(Auth::check())) {
-                window.location.href = "{{ route('login') }}";
-            } else {
-                form.action = "{{ route('incidents.store') }}?action=" + action;
-                form.submit();
-            }
+    function submitForm(action) {
+        var form = document.getElementById('incident-form');
+        if (action === 'authenticated' && !@json(Auth::check())) {
+            window.location.href = "{{ route('login') }}";
+        } else {
+            form.action = "{{ route('incidents.store') }}?action=" + action;
+            form.submit();
         }
-    </script>
+    }
+</script>
 @endsection
+
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<style>
+    #map {
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+@endpush
