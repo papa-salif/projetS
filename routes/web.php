@@ -75,6 +75,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/historique/admin', [App\Http\Controllers\HistoriqueController::class, 'adminHistorique'])->name('historique.admin');
 
+        Route::get('/admin/agents/{id}/edit', [AdminController::class, 'editAgent'])->name('admin.edit-agent');
+        Route::put('/admin/agents/{id}', [AdminController::class, 'updateAgent'])->name('admin.update-agent');
+        Route::delete('/admin/agents/{id}', [AdminController::class, 'deleteAgent'])->name('admin.delete-agent');
+
     });
 
     

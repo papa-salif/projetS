@@ -11,7 +11,9 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.dashboard');
+        $agents = User::where('role', 'agent')->get();
+        return view('admin.dashboard', compact('agents'));
+        //return view('admin.dashboard');
     }
 
     public function createAgent()
@@ -57,6 +59,49 @@ class AdminController extends Controller
         // ]);
     
         return redirect()->route('admin.dashboard')->with('success', 'Agent créé avec succès.');
+    }
+
+    // Afficher le formulaire d'édition d'un agent
+    public function editAgent($id)
+    {
+        $agent = User::findOrFail($id);
+        return view('admin.edit', compact('agent'));
+    }
+
+    // Mettre à jour un agent
+    public function updateAgent(Request $request, $id)
+    {
+        $agent = User::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $agent->id,
+            'agent_type' => 'required|string|in:agent_eau,agent_electricite,agent_pompier',
+        ]);
+
+        $agent->name = $request->name;
+        $agent->email = $request->email;
+        $agent->agent_type = $request->agent_type;
+
+        if ($request->password) {
+            $request->validate([
+                'password' => 'nullable|string|min:8|confirmed',
+            ]);
+            $agent->password = Hash::make($request->password);
+        }
+
+        $agent->save();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Agent mis à jour avec succès.');
+    }
+
+    // Supprimer un agent
+    public function deleteAgent($id)
+    {
+        $agent = User::findOrFail($id);
+        $agent->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Agent supprimé avec succès.');
     }
 }
 
