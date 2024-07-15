@@ -13,7 +13,7 @@ class Incident extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'type', 'description', 'localisation', 'latitude', 'longitude', 'preuves', 'agent_id', 'status'
+        'user_id', 'type', 'description', 'localisation', 'latitude', 'longitude','numero', 'ville', 'secteur', 'preuves', 'agent_id', 'status'
     ];
 
     protected $casts = [

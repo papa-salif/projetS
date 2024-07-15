@@ -19,6 +19,9 @@ return new class extends Migration
         $table->string('localisation');
         $table->decimal('latitude', 10, 7)->nullable();
         $table->decimal('longitude', 10, 7)->nullable();
+        $table->string('numero');
+        $table->string('ville');
+        $table->integer('secteur');
         $table->json('preuves')->nullable();
         $table->foreignId('agent_id')->nullable()->constrained('users')->onDelete('set null');
         $table->enum('status', ['pending', 'in_progress', 'resolved'])->default('pending');

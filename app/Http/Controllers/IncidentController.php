@@ -33,6 +33,9 @@ class IncidentController extends Controller
             'localisation' => 'required|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'numero' => 'required|string',
+            'ville'=> 'required|string',
+            'secteur'=> 'required|numeric',
             'preuves' => 'nullable|array',
             'preuves.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -43,6 +46,9 @@ class IncidentController extends Controller
         $incident->description = $request->description;
         $incident->localisation = $request->localisation;
         $incident->latitude = $request->latitude;
+        $incident->numero = $request->numero;
+        $incident->ville = $request->ville;
+        $incident->secteur = $request->secteur;
         $incident->longitude = $request->longitude;
 
         if ($request->hasFile('preuves')) {
@@ -83,6 +89,9 @@ class IncidentController extends Controller
             'localisation' => 'required|string',
             'latitude' => 'nullable|numeric',
             'longitude' => 'nullable|numeric',
+            'numero' => 'required|string',
+            'ville'=> 'required|string',
+            'secteur'=> 'required|numeric',
             'preuves' => 'nullable|array',
             'preuves.*' => 'image|mimes:jpeg,png,jpg|max:2048',
         ]);

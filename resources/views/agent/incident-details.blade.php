@@ -43,6 +43,9 @@
                             <div class="card-body">
                                 <p><strong>Nom:</strong> {{ $incident->reportedBy->name }}</p>
                                 <p><strong>Email:</strong> {{ $incident->reportedBy->email }}</p>
+                                <p><strong>Numero:</strong> {{ $incident->numero}}</p>
+                                <p><strong>Numero:</strong> {{ $incident->ville}}</p>
+                                <p><strong>Numero:</strong> {{ $incident->secteur}}</p>
                             </div>
                         </div>
 
@@ -70,7 +73,14 @@
                                 </button>
                             </form>
                         @else
-                            <p class="alert alert-info"><i class="fas fa-info-circle me-2"></i>C'est un visiteur !</p>
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <p class="alert alert-info"><i class="fas fa-info-circle me-2"></i>C'est un visiteur !</p>
+                                <p><strong>Numero:</strong> {{ $incident->numero}}</p>
+                                <p><strong>Ville:</strong> {{ $incident->ville}}</p>
+                                <p><strong>Secteur:</strong> {{ $incident->secteur}}</p>
+                            </div>
+                        </div>
                         @endif
                     </div>
                     <form action="{{ route('agent.update.status', $incident->id) }}" method="POST">
