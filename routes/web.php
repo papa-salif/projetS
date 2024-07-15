@@ -10,6 +10,7 @@ use App\Http\Controllers\User;
 use Illuminate\Support\Facades\Auth;
 use app\Http\Controllers\RatingController;
 use App\Http\Controllers\HistoriqueController;
+use App\Http\Controllers\NotificationController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -118,6 +119,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/historique/visiteur', [HistoriqueController::class, 'visiteurHistorique'])->name('historique.visiteur');
 
-
+Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
 Auth::routes();
 

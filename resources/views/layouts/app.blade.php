@@ -234,12 +234,13 @@
         main {
             min-height: calc(100vh - 60px);
         }
-        .dropdown-menu {
+        /* .dropdown-menu {
             z-index: 1030;
-        }
+        } */
     </style>
 </head>
 <body>
+    
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm animate__animated animate__fadeIn">
             <div class="container">
@@ -249,14 +250,14 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+        
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('incidents.create') }}"><i class="fas fa-exclamation-triangle"></i> Signaler un incident</a>
                         </li>
                     </ul>
-
+        
                     <ul class="navbar-nav ms-auto">
                         @guest
                             @if (Route::has('login'))
@@ -264,7 +265,7 @@
                                     <a class="nav-link" href="{{ route('login') }}"><i class="fas fa-sign-in-alt"></i> {{ __('Login') }}</a>
                                 </li>
                             @endif
-
+        
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}"><i class="fas fa-user-plus"></i> {{ __('Register') }}</a>
@@ -275,10 +276,31 @@
                             </li>
                         @else
                             <li class="nav-item dropdown">
+                                <a id="notificationDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <i class="fas fa-bell"></i>
+                                    {{-- <span class="badge badge-danger">{{ Auth::user()->unreadNotifications->count() }}</span> --}}
+                                </a>
+        
+                                <div class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="notificationDropdown">
+                                    {{-- @forelse(Auth::user()->unreadNotifications as $notification)
+                                        <a class="dropdown-item" href="#">
+                                            {{ $notification->data['message'] }}
+                                        </a>
+                                    @empty
+                                        <a class="dropdown-item text-muted" href="#">Aucune nouvelle notification</a>
+                                    @endforelse
+                                    @if(Auth::user()->unreadNotifications->count())
+                                        <div class="dropdown-divider"></div>
+                                        <a href="{{ route('notifications.mark-as-read') }}" class="dropdown-item text-center">Marquer tout comme lu</a>
+                                    @endif --}}
+                                </div>
+                            </li>
+        
+                            <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     <i class="fas fa-user"></i> {{ Auth::user()->name }}
                                 </a>
-
+        
                                 <div class="dropdown-menu dropdown-menu-end animate__animated animate__fadeIn" aria-labelledby="navbarDropdown">
                                     @if(Auth::user()->role == 'admin')
                                         <a class="dropdown-item" href="{{ route('admin.dashboard') }}"><i class="fas fa-tachometer-alt"></i> {{ __('Dashboard') }}</a>
@@ -287,7 +309,10 @@
                                     @else
                                         <a class="dropdown-item" href="{{ route('user.dashboard') }}"><i class="fas fa-tachometer-alt"></i> {{ __('Dashboard') }}</a>
                                     @endif
-
+        
+                                    <a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i> Modifier le profil</a>
+                                    {{-- <a class="dropdown-item" href="{{ route('notifications') }}"><i class="fas fa-bell"></i> Notifications</a> --}}
+        
                                     @if(auth()->user()->hasRole('user'))
                                         <a class="dropdown-item" href="{{ route('historique.user') }}"><i class="fas fa-history"></i> Mon historique</a>
                                     @elseif(auth()->user()->hasRole('agent'))
@@ -295,13 +320,13 @@
                                     @elseif(auth()->user()->hasRole('admin'))
                                         <a class="dropdown-item" href="{{ route('historique.admin') }}"><i class="fas fa-database"></i> Historique global</a>
                                     @endif
-
+        
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         <i class="fas fa-sign-out-alt"></i> {{ __('Logout') }}
                                     </a>
-
+        
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -312,6 +337,7 @@
                 </div>
             </div>
         </nav>
+        
 
         <main class="py-4">
             @yield('content')

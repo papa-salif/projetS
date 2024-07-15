@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\LoginController;
 
 class User extends Authenticatable
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'role',
         'agent_type',
     ];
+    
 
     public function isAgent()
     {
@@ -85,6 +87,18 @@ public function ration()
     public function hasRole($role)
 {
     return $this->role === $role;
+}
+
+function getUnreadNotifications()
+{
+    // Retrieve the currently authenticated user
+    $user = Auth::user();
+
+    // Retrieve the unread notifications
+    $unreadNotifications = $user->unreadNotifications;
+
+    // Return the unread notifications
+    return $unreadNotifications;
 }
 
 
