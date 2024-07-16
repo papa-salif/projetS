@@ -44,8 +44,8 @@
                                 <p><strong>Nom:</strong> {{ $incident->reportedBy->name }}</p>
                                 <p><strong>Email:</strong> {{ $incident->reportedBy->email }}</p>
                                 <p><strong>Numero:</strong> {{ $incident->numero}}</p>
-                                <p><strong>Numero:</strong> {{ $incident->ville}}</p>
-                                <p><strong>Numero:</strong> {{ $incident->secteur}}</p>
+                                <p><strong>Ville:</strong> {{ $incident->ville}}</p>
+                                <p><strong>Secteur:</strong> {{ $incident->secteur}}</p>
                             </div>
                         </div>
 

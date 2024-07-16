@@ -51,4 +51,5 @@ public function index(){
         
     return view('user.dashboard', compact('incidents'));
 }
+
 }

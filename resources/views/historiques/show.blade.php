@@ -36,39 +36,7 @@
                             </div>
                         </div>
                     </div>
-                    @if(Auth::check() && Auth::user()->role == 'user')
-                    <div class="mb-4">
-                        <a href="{{ route('incidents.edit', $incident->id) }}" class="btn btn-primary">
-                            <i class="fas fa-edit me-2"></i>Modifier
-                        </a>
-                    </div>
-                    <h4 class="text-primary mb-3"><i class="fas fa-comments me-2"></i>Chatbox</h4>
-                    <div class="card mb-4">
-                        <div id="chatbox" class="">
-                            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
-                                @foreach($messages as $message)
-                                    <div class="mb-2">
-                                        <strong>{{ $message->user->name }}:</strong>
-                                        <p class="mb-0">{{ $message->message }}</p>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <form action="{{ route('message.store', $incident) }}" method="POST">
-                            @csrf
-                            <div class="form-group mb-3">
-                                <label for="message">Message</label>
-                                <textarea name="message" id="message" rows="3" class="form-control" placeholder="Tapez votre message ici..."></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane me-2"></i>Envoyer
-                            </button>
-                        </form>
-                    </div>
-                    @else
                     <a href="{{ url()->previous() }}" class="btn btn-secondary">Retour à l'historique</a>
-                    @endif
                 </div>
             </div>
         </div>

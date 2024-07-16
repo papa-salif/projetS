@@ -234,9 +234,9 @@
         main {
             min-height: calc(100vh - 60px);
         }
-        /* .dropdown-menu {
+        .dropdown-menu {
             z-index: 1030;
-        } */
+        }
     </style>
 </head>
 <body>
@@ -244,6 +244,12 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light shadow-sm animate__animated animate__fadeIn">
             <div class="container">
+                <style>
+                    .dropdown-menu {
+                        z-index: 2000 !important;
+                    }
+                </style>
+                
                 <a class="navbar-brand" href="{{ url('/') }}">
                     <i class="fas fa-home"></i> {{ config('app.name', 'Laravel') }}
                 </a>
@@ -272,7 +278,7 @@
                                 </li>
                             @endif
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('historique.visiteur') }}"><i class="fas fa-history"></i> Historique</a>
+                                <a class="nav-link" href="{{ route('historique.index') }}"><i class="fas fa-history"></i> Historique</a>
                             </li>
                         @else
                             <li class="nav-item dropdown">
@@ -313,13 +319,16 @@
                                     <a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="fas fa-user-cog"></i> Modifier le profil</a>
                                     {{-- <a class="dropdown-item" href="{{ route('notifications') }}"><i class="fas fa-bell"></i> Notifications</a> --}}
         
-                                    @if(auth()->user()->hasRole('user'))
+                                    {{-- @if(auth()->user()->hasRole('user'))
                                         <a class="dropdown-item" href="{{ route('historique.user') }}"><i class="fas fa-history"></i> Mon historique</a>
                                     @elseif(auth()->user()->hasRole('agent'))
                                         <a class="dropdown-item" href="{{ route('historique.agent') }}"><i class="fas fa-clipboard-list"></i> Historique des incidents</a>
                                     @elseif(auth()->user()->hasRole('admin'))
                                         <a class="dropdown-item" href="{{ route('historique.admin') }}"><i class="fas fa-database"></i> Historique global</a>
-                                    @endif
+                                    @endif --}}
+                                    
+                                    <a class="dropdown-item" href="{{ route('historique.index') }}"><i class="fas fa-history"></i> Historique</a>
+                                    
         
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();

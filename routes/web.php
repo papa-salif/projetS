@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use app\Http\Controllers\RatingController;
 use App\Http\Controllers\HistoriqueController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -74,7 +76,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/admin/create-agent', [AdminController::class, 'createAgent'])->name('admin.create-agent');
         Route::post('/admin/store-agent', [AdminController::class, 'storeAgent'])->name('admin.store-agent');
 
-        Route::get('/historique/admin', [App\Http\Controllers\HistoriqueController::class, 'adminHistorique'])->name('historique.admin');
+        // Route::get('/historique/admin', [App\Http\Controllers\HistoriqueController::class, 'adminHistorique'])->name('historique.admin');
 
         Route::get('/admin/agents/{id}/edit', [AdminController::class, 'editAgent'])->name('admin.edit-agent');
         Route::put('/admin/agents/{id}', [AdminController::class, 'updateAgent'])->name('admin.update-agent');
@@ -91,7 +93,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/agent/incidents/{incident}/message', [AgentController::class, 'sendMessage'])->name('agent.send.message');
     Route::post('/agent/incidents/{incident}/update-status', [AgentController::class, 'updateStatus'])->name('agent.update.status'); // Utilisation de PATCH pour la mise à jour du statut
 
-    Route::get('/historique/agent', [App\Http\Controllers\HistoriqueController::class, 'agentHistorique'])->name('historique.agent');
+    // Route::get('/historique/agent', [App\Http\Controllers\HistoriqueController::class, 'agentHistorique'])->name('historique.agent');
 
   
 
@@ -111,15 +113,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/incidents/{incident}/evaluate', [RatingController::class, 'showEvaluationForm'])->name('incidents.evaluate');
         Route::post('/incidents/{incident}/evaluate', [RatingController::class, 'submitEvaluation'])->name('incidents.submitEvaluation');
 
-        Route::get('/historique/user', [App\Http\Controllers\HistoriqueController::class, 'userHistorique'])->name('historique.user');
+        // Route::get('/historique/user', [App\Http\Controllers\HistoriqueController::class, 'userHistorique'])->name('historique.user');
 
     });
 });
 
 
-Route::get('/historique/visiteur', [HistoriqueController::class, 'visiteurHistorique'])->name('historique.visiteur');
+Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique.index');
 
 Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
 Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
+
+Route::get('historique/details', [HistoriqueController::class, 'show'])->name('historique.show');
 Auth::routes();
 
