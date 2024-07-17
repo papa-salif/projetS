@@ -5,11 +5,23 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+                @if(Auth::check() && Auth::user()->role == 'user' )
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                     <h1 class="mb-0">
                         <i class="fas fa-file-alt me-2"></i>Détails de l'incident #{{ $incident->id }}
                     </h1>
+                    <a href="{{ route('incidents.evaluate', ['incident' => $incident->id]) }}" class="btn btn-ms h2">
+                        <i class="fas fa-sticky-note me-2"></i>Noter
+                    </a>
                 </div>
+                @else
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h1 class="mb-0">
+                        <i class="fas fa-file-alt me-2"></i>Détails de l'incident #{{ $incident->id }}
+                    </h1>
+            
+                </div>
+                @endif
                 <div class="card-body">
                     <div class="row mb-4">
                         <div class="col-md-6">
@@ -36,7 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    @if(Auth::check() && Auth::user()->role == 'user')
+                    @if(Auth::check() && Auth::user()->role == 'user' && $incident->status !== "resolved" && Auth::user()->id == $incident->user_id)
                     <div class="mb-4">
                         <a href="{{ route('incidents.edit', $incident->id) }}" class="btn btn-primary">
                             <i class="fas fa-edit me-2"></i>Modifier
@@ -44,12 +56,14 @@
                     </div>
                     <h4 class="text-primary mb-3"><i class="fas fa-comments me-2"></i>Chatbox</h4>
                     <div class="card mb-4">
+                                                        <label for="message">Message</label>
+
                         <div id="chatbox" class="">
                             <div class="card-body" style="max-height: 300px; overflow-y: auto;">
                                 @foreach($messages as $message)
                                     <div class="mb-2">
-                                        <strong>{{ $message->user->name }}:</strong>
-                                        <p class="mb-0">{{ $message->message }}</p>
+                                        {{-- <strong>{{ $message->user->name }}:</strong> --}}
+                                        <p class="mb-0"><strong>{{ $message->user->name }}:  </strong>{{ $message->message }}</p>
                                     </div>
                                 @endforeach
                             </div>
@@ -58,15 +72,18 @@
                         <form action="{{ route('message.store', $incident) }}" method="POST">
                             @csrf
                             <div class="form-group mb-3">
-                                <label for="message">Message</label>
+                                {{-- <label for="message">Message</label> --}}
                                 <textarea name="message" id="message" rows="3" class="form-control" placeholder="Tapez votre message ici..."></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-paper-plane me-2"></i>Envoyer
                             </button>
                         </form>
+                        <div>
+                            <a href="{{ url()->previous() }}" class="btn btn-secondary">Retour au tableau de board</a>                        </div>
                     </div>
                     @else
+                    <br>
                     <a href="{{ url()->previous() }}" class="btn btn-secondary">Retour à l'historique</a>
                     @endif
                 </div>

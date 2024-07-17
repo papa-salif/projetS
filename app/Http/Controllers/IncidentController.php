@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Notifications\IncidentStatusChanged;
 use App\Models\Message;
+use App\Events\IncidentCompleted;
 
 class IncidentController extends Controller
 {
@@ -134,14 +135,20 @@ class IncidentController extends Controller
 
 
     //pour les notifications
-    public function updateStatus(Request $request, Incident $incident)
+    public function updateStatus($newStatus, Incident $incident)
     {
-        $incident->status = $request->status;
-        $incident->save();
+        // $incident->status = $request->status;
+        // $incident->save();
 
-        $incident->user->notify(new IncidentStatusChanged($incident));
+        // $incident->user->notify(new IncidentStatusChanged($incident));
 
-        return back()->with('success', 'Statut mis à jour avec succès.');
+        // return back()->with('success', 'Statut mis à jour avec succès.');
+        $oldStatus = $incident->status;
+    $incident->status = $newStatus;
+    $incident->save();
+
+    event(new IncidentCompleted($incident, $oldStatus, $newStatus));
+
     }
 
     // app/Http/Controllers/IncidentController.php

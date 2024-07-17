@@ -7,7 +7,7 @@ use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateRatingRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use app\Models\Incident;
+use App\Models\Incident;
 class RatingController extends Controller
 {
     /**
@@ -108,7 +108,7 @@ public function askForRating()
 
 // private function getUserUsageCount($user)
 // {
-//     return Facture::where('user_id', $user->id)->count() + 
+//     return Facture::where('user_id', $user->id)->count() +
 //            Achat::where('user_id', $user->id)->count();
 // }
 

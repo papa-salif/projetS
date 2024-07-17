@@ -23,6 +23,7 @@
 
                     <div class="mb-4">
                         <a class="btn btn-primary" href="{{ route('admin.create-agent') }}">Créer un nouvel agent</a>
+                        <a class="btn btn-primary" href="{{ route('admin.notify') }}">notification</a>                  
                     </div>
 
                     <h2 class="h4 mb-4">Liste des Agents</h2>

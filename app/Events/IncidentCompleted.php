@@ -21,12 +21,21 @@ class IncidentCompleted
      */
 
      public $incident;
+     public $oldStatus;
+     public $newStatus;
+ 
+     public function __construct($incident, $oldStatus, $newStatus)
+     {
+         $this->incident = $incident;
+         $this->oldStatus = $oldStatus;
+         $this->newStatus = $newStatus;
+     }
 
-    public function __construct(Incident $incident)
-    {
-        $this->incident = $incident;
+    // public function __construct(Incident $incident)
+    // {
+    //     $this->incident = $incident;
 
-    }
+    // }
 
     /**
      * Get the channels the event should broadcast on.

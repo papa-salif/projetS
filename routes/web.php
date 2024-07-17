@@ -51,7 +51,7 @@ require __DIR__.'/auth.php';
 //    return view('welcome');
 // });
 
-  
+
 
 
 //visiteur
@@ -67,9 +67,9 @@ Route::middleware(['auth'])->group(function () {
     // Route::resource('incidents', IncidentController::class);
     Route::resource('incidents', IncidentController::class)->except(['create', 'store', 'show']);
 
-    
 
-    
+
+
 
     Route::middleware(['role:admin'])->group(function () {
         Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -84,8 +84,8 @@ Route::middleware(['auth'])->group(function () {
 
     });
 
-    
-    
+
+
     Route::middleware(['auth', 'role:agent'])->group(function () {
         Route::get('/agent/dashboard', [AgentController::class, 'dashboard'])->name('agent.dashboard');
     Route::post('/agent/incidents/{incident}/assign', [AgentController::class, 'assignIncident'])->name('agent.assign.incident');
@@ -95,7 +95,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Route::get('/historique/agent', [App\Http\Controllers\HistoriqueController::class, 'agentHistorique'])->name('historique.agent');
 
-  
+
 
     });
 
@@ -110,14 +110,16 @@ Route::middleware(['auth'])->group(function () {
         Route::get('user/dashboard',[App\Http\Controllers\UserController::class,'index'])->name('user.dashboard');
 
         //pour la notation
-        Route::get('/incidents/{incident}/evaluate', [RatingController::class, 'showEvaluationForm'])->name('incidents.evaluate');
-        Route::post('/incidents/{incident}/evaluate', [RatingController::class, 'submitEvaluation'])->name('incidents.submitEvaluation');
+        // Route::get('/incidents/{incident}/evaluate', [RatingController::class, 'showEvaluationForm'])->name('incidents.evaluate');
+        // Route::post('/incidents/{incident}/evaluate', [RatingController::class, 'submitEvaluation'])->name('incidents.submitEvaluation');
 
         // Route::get('/historique/user', [App\Http\Controllers\HistoriqueController::class, 'userHistorique'])->name('historique.user');
 
     });
 });
 
+Route::get('/incidents/{incident}/evaluate', [App\Http\Controllers\RatingController::class, 'showEvaluationForm'])->name('incidents.evaluate');
+Route::post('/incidents/{incident}/evaluate', [App\Http\Controllers\RatingController::class, 'submitEvaluation'])->name('incidents.submitEvaluation');
 
 Route::get('/historique', [HistoriqueController::class, 'index'])->name('historique.index');
 
@@ -125,5 +127,9 @@ Route::get('/notifications', [NotificationController::class, 'index'])->name('no
 Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.mark-as-read');
 
 Route::get('historique/details', [HistoriqueController::class, 'show'])->name('historique.show');
+
+// routes/web.php
+Route::post('/admin/notify-user', [AdminController::class, 'notifyUser'])->name('admin.notify-user');
+Route::get('/admin/notify-user', [AdminController::class, 'notify'])->name('admin.notify');
 Auth::routes();
 

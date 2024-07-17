@@ -73,13 +73,13 @@
                             <input type="file" name="preuves[]" id="preuves" class="form-control" multiple>
                         </div>
 
-                        <div class="mb-3">
-                            <div id="map" style="height: 300px; width: 100%;"></div>
-                        </div>
-
                         <div class="d-grid gap-2">
                             <button type="button" class="btn btn-primary" onclick="submitForm('simple')">Signaler</button>
                             <button type="button" class="btn btn-secondary" onclick="submitForm('authenticated')">Signaler et Suivi</button>
+                        </div>
+
+                        <div class="mb-3">
+                            <div id="map" style="height: 300px; width: 100%;"></div>
                         </div>
                     </form>
                 </div>

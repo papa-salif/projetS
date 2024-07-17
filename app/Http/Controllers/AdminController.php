@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Incident;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\AdminNotification;
 
 class AdminController extends Controller
 {
@@ -40,7 +42,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->password),
             'role' => 'agent',
             'agent_type' => $request->agent_type,
-            
+
         ]);
 
         // $validatedData = $request->validate([
@@ -49,7 +51,7 @@ class AdminController extends Controller
         //     'password' => 'required|string|min:8',
         //     'agent_type' => 'required|in:water_leak,power_outage,firefighter',
         // ]);
-    
+
         // $user = User::create([
         //     'name' => $validatedData['name'],
         //     'email' => $validatedData['email'],
@@ -57,7 +59,7 @@ class AdminController extends Controller
         //     'role' => 'agent',
         //     'agent_type' => $validatedData['agent_type'],
         // ]);
-    
+
         return redirect()->route('admin.dashboard')->with('success', 'Agent créé avec succès.');
     }
 
@@ -103,5 +105,25 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Agent supprimé avec succès.');
     }
+
+    public function notifyUser(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'message' => 'required|string',
+            'link' => 'nullable|url',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+        $user->notify(new AdminNotification($request->message, $request->link));
+
+        return back()->with('success', 'Notification envoyée avec succès.');
+    }
+    public function notify(Request $request){
+        $users=User::all();
+        return view('notifications.create', ['users' => $users]);
+        // return view('notifications.create');
+    }
+    
 }
 

@@ -110,6 +110,3 @@
 </style>
 @endpush
 
-@push('scripts')
- 
-@endpush
