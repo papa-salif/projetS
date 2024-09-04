@@ -24,7 +24,7 @@ jobs:
   deploy:
     name: Deploy
     needs: build
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2.3.2
